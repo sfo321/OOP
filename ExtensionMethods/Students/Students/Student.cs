@@ -17,7 +17,7 @@
         {
             this.Firstname = firstname;
             this.Lastname = lastname;
-            this.Marks = new List<int>();
+            this.Marks = marks;
         }
 
         public Student(string firstname, string lastname, List<int> marks, string fn, string tel, string email,
@@ -103,7 +103,7 @@
             {
                 if (value.Length < 10)
                 {
-                    throw new ArgumentException("Invalid number");
+                    throw new ArgumentException("Invalid email");
                 }
                 this.email = value;
             }
