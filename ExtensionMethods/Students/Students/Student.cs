@@ -2,7 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Linq;
+    using System.Text;
     public class Student
     {
         private string firstname;
@@ -107,6 +108,27 @@
                 }
                 this.email = value;
             }
+        }
+
+        public override string ToString()
+        {
+            var result = new StringBuilder();
+
+            result.AppendLine(this.firstname);
+            result.AppendLine(this.lastname);
+            result.AppendLine(this.fn);
+            result.AppendLine(this.tel);
+            result.AppendLine(this.email);
+            result.AppendLine(String.Format("Group: {0}", this.group.Groupnumber));
+            result.AppendLine(String.Format("Department: {0}", this.group.DepartmentName));
+            result.Append("Marks:");
+            foreach(int m in Marks)
+            {
+                result.AppendFormat(" {0},", m);
+            }
+        
+
+            return result.ToString();
         }
     }
 }
