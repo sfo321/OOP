@@ -13,6 +13,7 @@
             Console.WriteLine(proba.iMin());
             Console.WriteLine(proba.iMax());
             Console.WriteLine(proba.iAverage());
+            proba.ForEach(x => Console.WriteLine(x));
         }
     }
 }

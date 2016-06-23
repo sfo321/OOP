@@ -56,5 +56,13 @@
             var result = input.iSum() / input.Count();
             return result;
         }
+
+        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        {
+            foreach(var item in collection)
+            {
+                action(item);
+            }
+        }
     }
 }
