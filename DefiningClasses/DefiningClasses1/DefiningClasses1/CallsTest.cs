@@ -7,7 +7,7 @@
         private const decimal PricePM = 0.37M;
         public static void CallTest()
         {
-            MobilePhone TestGSM = new MobilePhone("Z500", "Sony", 500, "Ahmed",
+            MobilePhone TestGSM = new MobilePhone(" ", "Sony", 500, "Ahmed",
                 new Battery(BatteryType.ChineseDog, 5, 12), new Display(5, 1200000));
 
 
