@@ -1,25 +1,25 @@
 ﻿namespace School.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.Text;
-
-
-    using Human;
 
     public class Student : Human
     {
+        internal static List<int> studentID = new List<int>();
         public int ID { get; }
  
-        public Student(string firstname, string lastname) : base(firstname, lastname)
+        public Student(string firstname, string lastname, int id) : base(firstname, lastname)
         {
-            this.ID = GenerateId();
+            this.ID = GenerateId(id);
         }
 
-        private int GenerateId()
+        private int GenerateId(int step)
         {
             string id = "2016";
             id += (new Random().Next(1, 100000)).ToString().PadLeft(6, '0');
-            return int.Parse(id);
+            int result = int.Parse(id) + step;
+            return result;
         }
 
         public override string ToString()

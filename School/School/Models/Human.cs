@@ -1,8 +1,8 @@
-﻿namespace School.Human
+﻿namespace School.Models
 {
     using System;
 
-    public class Human
+    public abstract class Human
     {
         private string firstname;
 
