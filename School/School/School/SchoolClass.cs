@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace School.School
+﻿namespace School.School
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
     using Models;
 
     public class SchoolClass

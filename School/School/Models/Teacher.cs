@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Text;
     using Disciplines;
+
     public class Teacher : Human
     {
         private List<Discipline> disciplines;
