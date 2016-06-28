@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bank
+﻿namespace HW2OOpPrinciples.BankAccount
 {
-    interface Interface2
+    public interface IWithdraw
     {
+        void GetMoney(decimal amount);
     }
 }
