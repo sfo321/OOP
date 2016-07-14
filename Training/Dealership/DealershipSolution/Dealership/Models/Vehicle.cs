@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using Dealership.Common.Enums;
     using Common;
+    using System.Text;
     public abstract class Vehicle : IVehicle
     {
         private string make;
@@ -27,7 +28,7 @@
         {
             get
             {
-                return new List<IComment>(comments);
+                return this.comments;
             }
         }
 
@@ -74,6 +75,17 @@
                     "Price", Constants.MinPrice, Constants.MaxPrice));
                 this.price = value;
             }
+        }
+
+        public override string ToString()
+        {
+            var result = new StringBuilder();
+            result.AppendLine(String.Format("  Make: {0}", this.Make));
+            result.AppendLine(String.Format("  Model: {0}", this.Model));
+            result.AppendLine(String.Format("  Wheels: {0}", this.Wheels));
+            result.AppendLine(String.Format("  Price: ${0}", this.Price));
+
+            return result.ToString();
         }
     }
 }

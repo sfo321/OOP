@@ -1,9 +1,10 @@
 ﻿namespace Dealership.Models
 {
-    using Dealership.Common;
-    using Dealership.Common.Enums;
-    using Dealership.Contracts;
+    using Common;
+    using Common.Enums;
+    using Contracts;
     using System;
+    using System.Text;
 
     public class Motorcycle : Vehicle, IVehicle, IMotorcycle
     {
@@ -24,11 +25,23 @@
             }
             private set
             {
+                Validator.ValidateNull(value,
+                    String.Format("{0} cannot be null or empty!", "Category"));
+
                 Validator.ValidateIntRange(value.Length, Constants.MinCategoryLength, Constants.MaxCategoryLength,
                     String.Format(Constants.StringMustBeBetweenMinAndMax, "Category",
                     Constants.MinCategoryLength, Constants.MaxCategoryLength));
                 this.category = value;
             }
+        }
+
+        public override string ToString()
+        {
+            var result = new StringBuilder();
+            result.Append(base.ToString());
+            result.AppendLine(String.Format("  Category: {0}", this.Category));
+
+            return result.ToString();
         }
     }
 }

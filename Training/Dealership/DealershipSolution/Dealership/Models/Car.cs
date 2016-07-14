@@ -4,6 +4,7 @@
     using Common.Enums;
     using Dealership.Contracts;
     using System;
+    using System.Text;
 
     public class Car : Vehicle, IVehicle, ICar
     {
@@ -29,6 +30,15 @@
                     "Seats", Constants.MinSeats, Constants.MaxSeats));
                 this.seats = value;
             }
+        }
+
+        public override string ToString()
+        {
+            var result = new StringBuilder();
+            result.Append(base.ToString());
+            result.AppendLine(String.Format("  Seats: {0}", this.Seats));
+
+            return result.ToString();
         }
     }
 }

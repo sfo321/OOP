@@ -1,24 +1,22 @@
-﻿using Dealership.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dealership.Common.Enums;
-using Dealership.Common;
-
-namespace Dealership.Models
+﻿namespace Dealership.Models
 {
+    using Contracts;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using Common.Enums;
+    using Common;
+
     public class User : IUser
     {
         private string username;
         private string firstname;
         private string lastname;
         private string password;
-        public Role Role { get; set; }
-        private readonly IList<IVehicle> vehicles;
+        private Role role;
+        private IList<IVehicle> vehicles;
 
-        public User(string username, string firstName, string lastName, string password, string role)
+        public User(string username, string firstname, string lastname, string password, string role)
         {
             this.Username = username;
             this.FirstName = firstname;
@@ -37,12 +35,29 @@ namespace Dealership.Models
             }
             private set
             {
+               Validator.ValidateNull(value, 
+                   String.Format("{0} cannot be null or empty!", "Firstname"));
+
                 Validator.ValidateIntRange(value.Length, Constants.MinNameLength, Constants.MaxNameLength,
                     String.Format(Constants.StringMustBeBetweenMinAndMax, "Firstname", Constants.MinNameLength,
                     Constants.MaxNameLength));
                 this.firstname = value;
             }
         }
+
+
+        public Role Role
+        {
+            get
+            {
+                return this.role;
+            }
+            set
+            {
+                this.role = value;
+            }
+        }
+
 
         public string LastName
         {
@@ -52,6 +67,9 @@ namespace Dealership.Models
             }
             private set
             {
+                Validator.ValidateNull(value,
+                   String.Format("{0} cannot be null or empty!", "Lastname"));
+
                 Validator.ValidateIntRange(value.Length, Constants.MinNameLength, Constants.MaxNameLength,
                     String.Format(Constants.StringMustBeBetweenMinAndMax, "Lastname", Constants.MinNameLength,
                     Constants.MaxNameLength));
@@ -67,6 +85,13 @@ namespace Dealership.Models
             }
             private set
             {
+                Validator.ValidateNull(value,
+                   String.Format("{0} cannot be null or empty!", "Password"));
+
+                Validator.ValidateIntRange(value.Length, Constants.MinPasswordLength, Constants.MaxPasswordLength,
+                    String.Format(Constants.StringMustBeBetweenMinAndMax, "Password", Constants.MinPasswordLength,
+                    Constants.MaxPasswordLength));
+
                 Validator.ValidateSymbols(value, Constants.PasswordPattern,
                     String.Format(Constants.InvalidSymbols, "Password"));
                 this.password = value;
@@ -82,6 +107,13 @@ namespace Dealership.Models
             }
             private set
             {
+                Validator.ValidateNull(value,
+                    String.Format("{0} cannot be null or empty!", "Username"));
+
+                Validator.ValidateIntRange(value.Length, Constants.MinNameLength, Constants.MaxNameLength,
+                    String.Format(Constants.StringMustBeBetweenMinAndMax, "Username", Constants.MinNameLength,
+                    Constants.MaxNameLength));
+
                 Validator.ValidateSymbols(value, Constants.UsernamePattern,
                     String.Format(Constants.InvalidSymbols, "Username"));
                 this.username = value;
@@ -92,7 +124,7 @@ namespace Dealership.Models
         {
             get
             {
-                return new List<IVehicle>(vehicles);
+                return this.vehicles;
             }
         }
 
@@ -116,10 +148,43 @@ namespace Dealership.Models
             this.vehicles.Add(vehicle);
         }
 
+
         public string PrintVehicles()
         {
-            throw new NotImplementedException();
+            var result = new StringBuilder();
+            var counter = 1;
+
+            result.AppendLine(String.Format("--USER {0}--", this.Username));
+            if (Vehicles.Count > 0)
+            {
+                foreach (var vehicle in this.Vehicles)
+                {
+                    result.AppendLine(String.Format("{0}. {1}:", counter, vehicle.GetType().Name));
+                    result.Append(vehicle.ToString());
+                    counter++;
+
+                    if(vehicle.Comments.Count > 0)
+                    {
+                        result.AppendLine("    --COMMENTS--");
+                        foreach(var comment in vehicle.Comments)
+                        {
+                            result.Append(comment.ToString());
+                        }
+                        result.AppendLine("    --COMMENTS--");
+                    }
+                    else
+                    {
+                        result.AppendLine("    --NO COMMENTS--");
+                    }
+                }
+            }
+            else
+            {
+                result.AppendLine("--NO VEHICLES--");
+            }
+            return result.ToString().Trim();
         }
+
 
         public void RemoveComment(IComment commentToRemove, IVehicle vehicleToRemoveComment)
         {
@@ -136,6 +201,12 @@ namespace Dealership.Models
         public void RemoveVehicle(IVehicle vehicle)
         {
             this.vehicles.Remove(vehicle);
+        }
+
+        public override string ToString()
+        {
+            return String.Format(Constants.UserToString + ", Role: {3}", 
+                this.Username, this.FirstName, this.LastName, this.Role).Trim();
         }
     }
 }
