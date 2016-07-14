@@ -1,10 +1,10 @@
-﻿using Dealership.Contracts;
-using System;
-using Dealership.Models;
-using Dealership.Common.Enums;
-
-namespace Dealership.Factories
+﻿namespace Dealership.Factories
 {
+    using Dealership.Contracts;
+    using System;
+    using Dealership.Models;
+    using Dealership.Common.Enums;
+
     public class DealershipFactory : IDealershipFactory
     {
         public IVehicle CreateCar(string make, string model, decimal price, int seats)
@@ -24,7 +24,7 @@ namespace Dealership.Factories
 
         public IUser CreateUser(string username, string firstName, string lastName, string password, string role)
         {
-            // TODO: Implement this
+            return new User(username, firstName, lastName, password, role);
         }
 
         public IComment CreateComment(string content)

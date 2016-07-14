@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dealership.Common.Enums;
+using Dealership.Common;
 
 namespace Dealership.Models
 {
@@ -14,6 +15,8 @@ namespace Dealership.Models
         private string firstname;
         private string lastname;
         private string password;
+        public Role Role { get; set; }
+        private readonly IList<IVehicle> vehicles;
 
         public User(string username, string firstName, string lastName, string password, string role)
         {
@@ -21,6 +24,9 @@ namespace Dealership.Models
             this.FirstName = firstname;
             this.LastName = lastname;
             this.Password = password;
+            Role rol = (Role)Enum.Parse(typeof(Role), role);
+            this.Role = rol;
+            this.vehicles = new List<IVehicle>();
         }
 
         public string FirstName
@@ -28,6 +34,13 @@ namespace Dealership.Models
             get
             {
                 return this.firstname;
+            }
+            private set
+            {
+                Validator.ValidateIntRange(value.Length, Constants.MinNameLength, Constants.MaxNameLength,
+                    String.Format(Constants.StringMustBeBetweenMinAndMax, "Firstname", Constants.MinNameLength,
+                    Constants.MaxNameLength));
+                this.firstname = value;
             }
         }
 
@@ -37,6 +50,13 @@ namespace Dealership.Models
             {
                 return this.lastname;
             }
+            private set
+            {
+                Validator.ValidateIntRange(value.Length, Constants.MinNameLength, Constants.MaxNameLength,
+                    String.Format(Constants.StringMustBeBetweenMinAndMax, "Lastname", Constants.MinNameLength,
+                    Constants.MaxNameLength));
+                this.lastname = value;
+            }
         }
 
         public string Password
@@ -45,15 +65,14 @@ namespace Dealership.Models
             {
                 return this.password;
             }
-        }
-
-        public Role Role
-        {
-            get
+            private set
             {
-                return this.Role;
+                Validator.ValidateSymbols(value, Constants.PasswordPattern,
+                    String.Format(Constants.InvalidSymbols, "Password"));
+                this.password = value;
             }
         }
+
 
         public string Username
         {
@@ -61,24 +80,40 @@ namespace Dealership.Models
             {
                 return this.username;
             }
+            private set
+            {
+                Validator.ValidateSymbols(value, Constants.UsernamePattern,
+                    String.Format(Constants.InvalidSymbols, "Username"));
+                this.username = value;
+            }
         }
 
         public IList<IVehicle> Vehicles
         {
             get
             {
-                throw new NotImplementedException();
+                return new List<IVehicle>(vehicles);
             }
         }
 
         public void AddComment(IComment commentToAdd, IVehicle vehicleToAddComment)
         {
-            throw new NotImplementedException();
+            commentToAdd.Author = this.Username;
+            vehicleToAddComment.Comments.Add(commentToAdd);
         }
 
         public void AddVehicle(IVehicle vehicle)
         {
-            throw new NotImplementedException();
+            if(this.Role == Role.Admin)
+            {
+                throw new ArgumentException(Constants.AdminCannotAddVehicles);
+            }
+            if(this.Role == Role.Normal && vehicles.Count >= Constants.MaxVehiclesToAdd)
+            {
+                throw new ArgumentException(String.Format(Constants.NotAnVipUserVehiclesAdd,
+                    Constants.MaxVehiclesToAdd));
+            }
+            this.vehicles.Add(vehicle);
         }
 
         public string PrintVehicles()
@@ -88,12 +123,19 @@ namespace Dealership.Models
 
         public void RemoveComment(IComment commentToRemove, IVehicle vehicleToRemoveComment)
         {
-            throw new NotImplementedException();
+            if(commentToRemove.Author == this.Username)
+            {
+                vehicleToRemoveComment.Comments.Remove(commentToRemove);
+            }
+            else
+            {
+                throw new ArgumentException(Constants.YouAreNotTheAuthor);
+            }
         }
 
         public void RemoveVehicle(IVehicle vehicle)
         {
-            throw new NotImplementedException();
+            this.vehicles.Remove(vehicle);
         }
     }
 }
