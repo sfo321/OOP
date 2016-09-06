@@ -7,6 +7,6 @@
 
     public class Database : IDatabase
     {
-        public IList<Car> Cars { get; set; }
+        public IList<ICar> Cars { get; set; }
     }
 }

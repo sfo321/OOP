@@ -29,7 +29,7 @@
             }
         }
 
-        public void Add(Car car)
+        public void Add(ICar car)
         {
             if (car == null)
             {
@@ -39,7 +39,7 @@
             this.Data.Cars.Add(car);
         }
 
-        public void Remove(Car car)
+        public void Remove(ICar car)
         {
             if (car == null)
             {
@@ -49,7 +49,7 @@
             this.Data.Cars.Remove(car);
         }
 
-        public Car GetById(int id)
+        public ICar GetById(int id)
         {
             var car = this.Data.Cars.FirstOrDefault(c => c.Id == id);
 
@@ -61,22 +61,22 @@
             return car;
         }
 
-        public ICollection<Car> All()
+        public ICollection<ICar> All()
         {
             return this.Data.Cars.ToList();
         }
 
-        public ICollection<Car> SortedByMake()
+        public ICollection<ICar> SortedByMake()
         {
             return this.Data.Cars.OrderBy(c => c.Make).ToList();
         }
 
-        public ICollection<Car> SortedByYear()
+        public ICollection<ICar> SortedByYear()
         {
             return this.Data.Cars.OrderByDescending(c => c.Year).ToList();
         }
 
-        public ICollection<Car> Search(string condition)
+        public ICollection<ICar> Search(string condition)
         {
             if (string.IsNullOrEmpty(condition))
             {

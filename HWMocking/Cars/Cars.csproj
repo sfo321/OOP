@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\ICar.cs" />
     <Compile Include="Contracts\ICarsRepository.cs" />
     <Compile Include="Contracts\IView.cs" />
     <Compile Include="Controllers\CarsController.cs" />

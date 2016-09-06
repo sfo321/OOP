@@ -28,7 +28,7 @@
             return new View(cars);
         }
 
-        public IView Add(Car car)
+        public IView Add(ICar car)
         {
             if (car == null)
             {
@@ -64,7 +64,7 @@
 
         public IView Sort(string parameter)
         {
-            ICollection<Car> result = null;
+            ICollection<ICar> result = null;
 
             switch (parameter)
             {

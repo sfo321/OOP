@@ -5,6 +5,6 @@
 
     public interface IDatabase
     {
-        IList<Car> Cars { get; set; }
+        IList<ICar> Cars { get; set; }
     }
 }
