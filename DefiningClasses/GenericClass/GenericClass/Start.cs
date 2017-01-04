@@ -7,16 +7,18 @@
 
         static void Main()
         {
-            GenericList<int> proba = new GenericList<int>();
+            GenericList<int> proba = new GenericList<int>() { 1, 2, 3, 4, 5, 6, 7};
 
-            for(int i = 0; i < 12; i++)
+            proba.RemoveAt(2);
+
+            for (int i = 0; i < 12; i++)
             {
                 proba.Add(i);
-                if(i == 4)
+                if (i == 4)
                 {
                     proba.Insert(42, 2);
                 }
-                if(i == 5)
+                if (i == 5)
                 {
                     proba.RemoveAt(3);
                 }

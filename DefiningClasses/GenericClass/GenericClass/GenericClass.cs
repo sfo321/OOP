@@ -12,11 +12,13 @@
         private const int StartCapacity = 4;
         private T[] elements;
 
+
         public GenericList()
         {
             this.Capacity = StartCapacity;
             this.elements = new T[Capacity];           
         }
+
 
         public int Capacity { get; private set; }
         public int Count { get; private set; }
@@ -37,6 +39,7 @@
             return position;
         }
 
+
         public void Add(T element)
         {
             if (this.Count == this.Capacity)
@@ -48,6 +51,7 @@
             this.Count++;
         }
 
+
         private void ReSize()
         {
             var oldElements = this.elements;
@@ -56,34 +60,34 @@
             Array.Copy(oldElements, this.elements, this.Count);
         }
 
+
         public void Insert(T element, int position)
         {
-            if(position >= 0 && position < this.Count)
-            {
-                this.Count++;
-                if (this.Count == this.Capacity)
-                {
-                    this.ReSize();
-                }
-                var temp = this.elements;
-                this.elements = new T[Capacity];
-                int flag = 0;
-                for(int i = 0; i < this.Count; i++)
-                {
-                    if(i == position)
-                    {
-                        this.elements[i] = element;
-                        flag = 1;
-                        continue;
-                    }
-                    this.elements[i] = temp[i - flag];
-                }
-            }
-            else
+            if (position < 0 || position > this.Count)
             {
                 throw new IndexOutOfRangeException();
             }
+
+            this.Count++;
+            if (this.Count == this.Capacity)
+            {
+                this.ReSize();
+            }
+            var temp = this.elements;
+            this.elements = new T[Capacity];
+            int flag = 0;
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (i == position)
+                {
+                    this.elements[i] = element;
+                    flag = 1;
+                    continue;
+                }
+                this.elements[i] = temp[i - flag];
+            }
         }
+
 
         public void Clear()
         {
@@ -92,35 +96,31 @@
             this.Count = 0;
         }
 
+
         public T FindAt(int position)
         {
-            if (position >= 0 && position < this.Capacity)
-            {
-                return this.elements[position];
-            }
-            else
+            if (position < 0 || position >= this.Capacity)
             {
                 throw new IndexOutOfRangeException();
             }
+            return this.elements[position];
         }
+
 
         public void RemoveAt(int position)
         {
-            if(position >= 0 && position < this.Capacity)
-            {
-                var temp = this.elements;
-                this.elements = new T[Capacity];
-                Array.Copy(temp, this.elements, position);
-                for(int i = position; i < this.Count - 1; i++)
-                {
-                    this.elements[i] = temp[i + 1]; 
-                }
-                this.Count--;
-            }
-            else
+            if (position < 0 || position >= this.Capacity)
             {
                 throw new IndexOutOfRangeException();
             }
+            var temp = this.elements;
+            this.elements = new T[Capacity];
+            Array.Copy(temp, this.elements, position);
+            for (int i = position; i < this.Count - 1; i++)
+            {
+                this.elements[i] = temp[i + 1];
+            }
+            this.Count--;
         }
 
         public override string ToString()
@@ -134,44 +134,48 @@
         }
 
         public T Min()
-        {           
-            if (this.Count > 0)
-            {
-                var temp = this.elements[0];
-                for (int i = 1; i < this.Count; i++)
-                {
-                    if(temp.CompareTo(this.elements[i]) > 0)
-                    {
-                        temp = this.elements[i];
-                    }
-                }
-                return temp;
-            }    
-            else
+        {
+            if (this.Count <= 0)
             {
                 throw new IndexOutOfRangeException();
-            }       
+            }
+            var temp = this.elements[0];
+            for (int i = 1; i < this.Count; i++)
+            {
+                if (temp.CompareTo(this.elements[i]) > 0)
+                {
+                    temp = this.elements[i];
+                }
+            }
+            return temp;
         }
 
         public T Max()
-        {            
-            if (this.Count > 0)
-            {
-                var temp = this.elements[0];
-                for (int i = 1; i < this.Count; i++)
-                {
-                    if (temp.CompareTo(this.elements[i]) < 0)
-                    {
-                        temp = this.elements[i];
-                    }
-                }
-                return temp;
-            }
-            else
+        {
+            if (this.Count <= 0)
             {
                 throw new IndexOutOfRangeException();
             }
+            var temp = this.elements[0];
+            for (int i = 1; i < this.Count; i++)
+            {
+                if (temp.CompareTo(this.elements[i]) < 0)
+                {
+                    temp = this.elements[i];
+                }
+            }
+            return temp;
         }
+
+
+        public void ForEach(IEnumerable<T> collection, Action<T> action)
+        {
+            foreach (var item in collection)
+            {
+                action(item);
+            }
+        }
+
 
         public IEnumerator<T> GetEnumerator()
         {
